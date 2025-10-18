@@ -10,46 +10,37 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @State private var selectedTab: TabCategory = .thisMonth
+    @State private var showingAddPlan = false
+    @State private var addPlanViewHeight: CGFloat = 0
 
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        TabView(selection: $selectedTab) {
+            ForEach(TabCategory.visibleTabs, id: \.self) { category in
+                NavigationStack {
+                    PlanListView(category: category)
+                        .navigationTitle(category.displayName)
+                        .toolbar {
+                            ToolbarItem(placement: .primaryAction) {
+                                Button {
+                                    showingAddPlan = true
+                                } label: {
+                                    Label("予定を追加", systemImage: "plus")
+                                }
+                            }
+                        }
                 }
-                .onDelete(perform: deleteItems)
+                .tabItem {
+                    Label(category.displayName, systemImage: category.iconName)
+                }
+                .tag(category)
             }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
         }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+        .sheet(isPresented: $showingAddPlan) {
+            GeometryReader { geometry in
+                AddPlanView()
+                    .presentationDetents([.large])
+                    .presentationDragIndicator(.visible)
             }
         }
     }
@@ -57,5 +48,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Plan.self, inMemory: true)
 }

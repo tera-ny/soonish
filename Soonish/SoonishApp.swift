@@ -12,9 +12,13 @@ import SwiftData
 struct SoonishApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Plan.self,
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        let modelConfiguration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: true,
+            cloudKitDatabase: .automatic // iCloud同期を有効化
+        )
 
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
