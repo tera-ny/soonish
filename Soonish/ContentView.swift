@@ -14,6 +14,9 @@ struct ContentView: View {
     @State private var showingAddPlan = false
     @State private var addPlanViewHeight: CGFloat = 0
 
+    // テーマカラー（紫）
+    private let purpleTheme = Color(red: 0.55, green: 0.4, blue: 0.8)
+
     var body: some View {
         TabView(selection: $selectedTab) {
             ForEach(TabCategory.visibleTabs, id: \.self) { category in
@@ -27,6 +30,7 @@ struct ContentView: View {
                                 } label: {
                                     Label("予定を追加", systemImage: "plus")
                                 }
+                                .tint(purpleTheme)
                             }
                         }
                 }
@@ -36,6 +40,7 @@ struct ContentView: View {
                 .tag(category)
             }
         }
+        .tint(purpleTheme)  // タブバーの選択色を紫に
         .sheet(isPresented: $showingAddPlan) {
             GeometryReader { geometry in
                 AddPlanView()

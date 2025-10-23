@@ -33,6 +33,9 @@ struct AddPlanView: View {
     @State private var memo = ""
     @State private var contentHeight: CGFloat = 500
 
+    // テーマカラー（紫）
+    private let purpleTheme = Color(red: 0.55, green: 0.4, blue: 0.8)
+
     var body: some View {
         NavigationStack {
             Form {
@@ -98,8 +101,10 @@ struct AddPlanView: View {
                         Text("追加する")
                             .frame(maxWidth: .infinity)
                             .font(.headline)
+                            .padding(.vertical, 4)
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(purpleTheme)
                     .disabled(title.isEmpty)
                     .listRowBackground(Color.clear)
                 }
