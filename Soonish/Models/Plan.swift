@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import FoundationModels
 
 /// 「なんとなくの予定」を表すSwiftDataモデル
 @Model

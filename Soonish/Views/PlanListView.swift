@@ -182,15 +182,8 @@ struct PlanRowView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(16)
-        .background(cardBackgroundColor)
         .cornerRadius(16)
         .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 2)
-    }
-
-    /// カードの背景色（白ベースで統一）
-    private var cardBackgroundColor: Color {
-        // すべて白ベース（紫はアクセントとして使用）
-        return Color(red: 1.0, green: 1.0, blue: 1.0)
     }
 }
 
